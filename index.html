@@ -14,23 +14,20 @@
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
     body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f0f5;color:#1a1a1a;height:100vh;overflow:hidden;display:flex;flex-direction:column}
 
-    /* LOGIN SCREEN */
     #login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;padding:2rem;background:#f0f0f5}
     .login-icon{font-size:56px;margin-bottom:1rem}
-    .login-title{font-size:24px;font-weight:700;color:#1a1a1a;margin-bottom:.5rem}
+    .login-title{font-size:24px;font-weight:700;margin-bottom:.5rem}
     .login-sub{font-size:15px;color:#888;margin-bottom:2.5rem;text-align:center;line-height:1.5}
     .google-btn{display:flex;align-items:center;gap:12px;background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:14px 24px;font-size:16px;font-weight:500;cursor:pointer;color:#1a1a1a;box-shadow:0 2px 8px rgba(0,0,0,.08)}
     .google-btn:active{background:#f9f9f9;transform:scale(.98)}
     .google-btn svg{width:20px;height:20px;flex-shrink:0}
     .login-note{font-size:12px;color:#bbb;margin-top:1.5rem;text-align:center}
 
-    /* LOADING */
     #loading-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#f0f0f5;gap:1rem}
     .spinner{width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#4F46E5;border-radius:50%;animation:spin .7s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
     .loading-text{font-size:14px;color:#888}
 
-    /* MAIN APP */
     #app{display:none;flex-direction:column;height:100vh;overflow:hidden}
     #app.visible{display:flex}
 
@@ -40,7 +37,8 @@
     .header-actions{display:flex;gap:6px;align-items:center}
     .hbtn{background:rgba(255,255,255,0.2);border:none;color:white;border-radius:8px;padding:5px 11px;font-size:13px;cursor:pointer}
     .hbtn:active{background:rgba(255,255,255,0.35)}
-    .avatar{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.5);cursor:pointer;object-fit:cover;background:#7C6AE8;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:white;flex-shrink:0}
+    .avatar{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.5);cursor:pointer;background:#7C6AE8;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:white;flex-shrink:0;overflow:hidden}
+    .avatar img{width:28px;height:28px;object-fit:cover}
     .tabs-scroll{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
     .tabs-scroll::-webkit-scrollbar{display:none}
     .tab{flex-shrink:0;padding:7px 14px;border-radius:8px 8px 0 0;font-size:13px;font-weight:500;cursor:pointer;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.75);border:none;white-space:nowrap;display:flex;align-items:center;gap:6px}
@@ -82,14 +80,23 @@
     .card-title{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem;display:flex;align-items:center;justify-content:space-between}
     .card-title-btn{font-size:11px;font-weight:500;color:#4F46E5;background:none;border:none;cursor:pointer;padding:0}
 
-    input,select{width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:0 12px;height:40px;font-size:15px;background:#fafafa;color:#1a1a1a;outline:none;-webkit-appearance:none}
-    input:focus,select:focus{border-color:#4F46E5;background:white}
+    input{width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:0 12px;height:40px;font-size:15px;background:#fafafa;color:#1a1a1a;outline:none;-webkit-appearance:none}
+    input:focus{border-color:#4F46E5;background:white}
+
     .budget-row{display:flex;align-items:center;gap:8px}
     .budget-row label{font-size:14px;color:#555;white-space:nowrap}
     .budget-row input{max-width:130px}
-    .add-row{display:grid;grid-template-columns:1fr 105px 42px;gap:7px;margin-bottom:7px}
+
+    /* ADD EXPENSE */
+    .add-inputs{display:grid;grid-template-columns:1fr 105px 42px;gap:7px;margin-bottom:10px}
     .add-btn{background:#4F46E5;color:white;border:none;border-radius:8px;width:42px;height:40px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center}
     .add-btn:active{background:#4338CA;transform:scale(.95)}
+
+    /* CATEGORY CHIPS */
+    .cat-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:2px}
+    .cat-chip{padding:7px 13px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:2px solid transparent;transition:all .15s;user-select:none}
+    .cat-chip.selected{border-color:currentColor;box-shadow:0 0 0 1px currentColor}
+    .cat-chip:active{transform:scale(.95)}
 
     .entries-table{width:100%;border-collapse:collapse;font-size:13px}
     .entries-table th{font-size:10px;font-weight:600;color:#888;text-align:left;padding:0 0 7px;border-bottom:1px solid #f0f0f0;text-transform:uppercase}
@@ -102,11 +109,15 @@
     .empty{color:#bbb;font-size:14px;text-align:center;padding:1.5rem 0}
     .badge{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500;white-space:nowrap;display:inline-block}
 
-    /* CATEGORIES */
+    /* CATEGORY MANAGER */
     .cat-list{display:flex;flex-direction:column;gap:6px;margin-bottom:.75rem}
-    .cat-row{display:flex;align-items:center;gap:8px}
-    .cat-color-btn{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px}
-    .cat-name-input{flex:1;height:36px;font-size:14px}
+    .cat-row{display:flex;align-items:center;gap:8px;padding:6px 4px;border-radius:8px;background:#fafafa;touch-action:none}
+    .cat-row.dragging{opacity:.5;background:#f0f0f5}
+    .cat-row.drag-over{border-top:2px solid #4F46E5}
+    .drag-handle{color:#ccc;font-size:16px;cursor:grab;padding:0 4px;flex-shrink:0;user-select:none}
+    .drag-handle:active{cursor:grabbing}
+    .cat-color-btn{width:26px;height:26px;border-radius:50%;border:2px solid transparent;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px}
+    .cat-name-input{flex:1;height:34px;font-size:14px;background:white}
     .cat-del-btn{background:none;border:none;color:#ccc;font-size:18px;cursor:pointer;padding:0 4px;flex-shrink:0}
     .cat-del-btn:active{color:#dc2626}
     .add-cat-row{display:flex;gap:8px;align-items:center}
@@ -157,17 +168,16 @@
     .btn-confirm:active{opacity:.85}
     .btn-full{width:100%;background:#4F46E5;border:none;border-radius:8px;height:42px;font-size:15px;cursor:pointer;color:white;font-weight:500;margin-top:.5rem}
     .btn-signout{width:100%;background:#f3f4f6;border:none;border-radius:8px;height:42px;font-size:15px;cursor:pointer;color:#dc2626;margin-top:.5rem}
+    .drag-hint{font-size:12px;color:#aaa;text-align:center;padding:4px 0 8px}
   </style>
 </head>
 <body>
 
-<!-- LOADING -->
 <div id="loading-screen">
   <div class="spinner"></div>
   <div class="loading-text">Loading...</div>
 </div>
 
-<!-- LOGIN -->
 <div id="login-screen" style="display:none">
   <div class="login-icon">💰</div>
   <div class="login-title">Finance Tracker</div>
@@ -179,7 +189,6 @@
   <div class="login-note">Your data is private and only visible to you</div>
 </div>
 
-<!-- MAIN APP -->
 <div id="app">
   <header>
     <div class="header-top">
@@ -192,9 +201,7 @@
     </div>
     <div class="tabs-scroll" id="tabs"></div>
   </header>
-
   <div class="sync-bar hidden" id="sync-bar"></div>
-
   <div class="nav-pills">
     <button class="pill active" id="pill-tracker" onclick="switchView('tracker')">Tracker</button>
     <button class="pill" id="pill-charts" onclick="switchView('charts')">Charts</button>
@@ -210,8 +217,7 @@
 <!-- Modals -->
 <div class="modal-bg" id="modal-page">
   <div class="modal">
-    <h3>New page</h3>
-    <p>Give your budget page a name</p>
+    <h3>New page</h3><p>Give your budget page a name</p>
     <input type="text" id="modal-page-input" placeholder="e.g. Savings, Rent, Fun money" maxlength="24" />
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal('modal-page')">Cancel</button>
@@ -223,7 +229,7 @@
 <div class="modal-bg" id="modal-reset">
   <div class="modal">
     <h3>Start new month?</h3>
-    <p>Your current expenses will be saved to History. Budgets and page names are kept.</p>
+    <p>Current expenses saved to History. Budgets and pages kept.</p>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal('modal-reset')">Cancel</button>
       <button class="btn-confirm danger" onclick="confirmReset()">Reset month</button>
@@ -235,6 +241,7 @@
   <div class="modal">
     <h3>Edit categories</h3>
     <p id="modal-cats-subtitle"></p>
+    <div class="drag-hint">Hold and drag ≡ to reorder</div>
     <div class="cat-list" id="cat-list"></div>
     <div class="add-cat-row">
       <input type="text" id="new-cat-name" placeholder="New category name" maxlength="20" />
@@ -298,6 +305,8 @@ let pickerTargetId = null;
 let saveTimeout = null;
 let unsubscribe = null;
 let currentUser = null;
+// Per-page selected category (not persisted, just UI state)
+let selectedCats = {};
 
 function uid(){ return Math.random().toString(36).slice(2,9); }
 function fmt(n){ return '$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
@@ -306,84 +315,68 @@ function cloneDeep(x){ return JSON.parse(JSON.stringify(x)); }
 function catById(cats,id){ return cats.find(c=>c.id===id)||{name:'Other',color:'#6B7280'}; }
 function badgeHTML(cat){ return `<span class="badge" style="background:${cat.color}22;color:${cat.color}">${cat.name}</span>`; }
 
-function showSync(msg, type){
-  const el = document.getElementById('sync-bar');
-  el.textContent = msg;
-  el.className = `sync-bar ${type}`;
-  if(type==='saved') setTimeout(()=>{ el.className='sync-bar hidden'; }, 2000);
+function showSync(msg,type){
+  const el=document.getElementById('sync-bar');
+  el.textContent=msg; el.className=`sync-bar ${type}`;
+  if(type==='saved') setTimeout(()=>{ el.className='sync-bar hidden'; },2000);
 }
 
-// ---- FIREBASE SAVE (debounced) ----
 async function save(){
-  if(!currentUser || !state) return;
+  if(!currentUser||!state) return;
   clearTimeout(saveTimeout);
-  showSync('Saving...', 'saving');
-  saveTimeout = setTimeout(async ()=>{
-    try {
-      await setDoc(doc(db, 'users', currentUser.uid), state);
-      showSync('Saved', 'saved');
-    } catch(e){
-      showSync('Save failed — check connection', 'error');
-    }
-  }, 800);
+  showSync('Saving...','saving');
+  saveTimeout=setTimeout(async()=>{
+    try{ await setDoc(doc(db,'users',currentUser.uid),state); showSync('Saved','saved'); }
+    catch(e){ showSync('Save failed — check connection','error'); }
+  },800);
 }
 
 // ---- AUTH ----
 window.signIn = async function(){
-  const provider = new GoogleAuthProvider();
-  try { await signInWithPopup(auth, provider); }
+  try{ await signInWithPopup(auth, new GoogleAuthProvider()); }
   catch(e){ alert('Sign in failed: '+e.message); }
 };
-
 window.signOut = async function(){
   if(unsubscribe) unsubscribe();
   await fbSignOut(auth);
-  state = null; currentUser = null;
+  state=null; currentUser=null;
   closeModal('modal-profile');
   document.getElementById('app').classList.remove('visible');
   document.getElementById('login-screen').style.display='flex';
 };
-
 window.openProfileModal = function(){
-  document.getElementById('profile-name').textContent = currentUser.displayName || 'Account';
-  document.getElementById('profile-email').textContent = currentUser.email || '';
+  document.getElementById('profile-name').textContent=currentUser.displayName||'Account';
+  document.getElementById('profile-email').textContent=currentUser.email||'';
   document.getElementById('modal-profile').classList.add('open');
 };
 
-onAuthStateChanged(auth, async (user)=>{
+onAuthStateChanged(auth, async(user)=>{
   document.getElementById('loading-screen').style.display='none';
   if(!user){
     document.getElementById('login-screen').style.display='flex';
     document.getElementById('app').classList.remove('visible');
     return;
   }
-  currentUser = user;
+  currentUser=user;
   document.getElementById('login-screen').style.display='none';
+  const av=document.getElementById('avatar');
+  if(user.photoURL) av.innerHTML=`<img src="${user.photoURL}" />`;
+  else av.textContent=(user.displayName||user.email||'U')[0].toUpperCase();
 
-  // Set avatar
-  const av = document.getElementById('avatar');
-  if(user.photoURL){
-    av.innerHTML=`<img src="${user.photoURL}" style="width:28px;height:28px;border-radius:50%;display:block" />`;
-  } else {
-    av.textContent = (user.displayName||user.email||'U')[0].toUpperCase();
-  }
-
-  // Listen to Firestore in real-time
   if(unsubscribe) unsubscribe();
-  unsubscribe = onSnapshot(doc(db,'users',user.uid), (snap)=>{
+  unsubscribe=onSnapshot(doc(db,'users',user.uid),(snap)=>{
     if(snap.exists()){
-      state = snap.data();
+      state=snap.data();
       state.pages.forEach(p=>{ if(!p.cats) p.cats=cloneDeep(DEFAULT_CATS); });
     } else {
-      state = {
-        pages:[
-          {id:uid(),name:'Allowance',budget:0,entries:[],cats:cloneDeep(DEFAULT_CATS)},
-          {id:uid(),name:'Necessities',budget:0,entries:[],cats:cloneDeep(DEFAULT_CATS)}
-        ],
-        history:[]
-      };
-      setDoc(doc(db,'users',user.uid), state);
+      state={pages:[
+        {id:uid(),name:'Allowance',budget:0,entries:[],cats:cloneDeep(DEFAULT_CATS)},
+        {id:uid(),name:'Necessities',budget:0,entries:[],cats:cloneDeep(DEFAULT_CATS)}
+      ],history:[]};
+      setDoc(doc(db,'users',user.uid),state);
     }
+    // Init selected cats for new pages
+    state.pages.forEach((p,i)=>{ if(!(i in selectedCats)) selectedCats[i]=p.cats[0]?.id||''; });
     document.getElementById('app').classList.add('visible');
     render();
   });
@@ -392,16 +385,13 @@ onAuthStateChanged(auth, async (user)=>{
 // ---- VIEWS ----
 function switchView(v){
   activeView=v;
-  ['tracker','charts','history'].forEach(x=>{
-    document.getElementById('pill-'+x).classList.toggle('active',x===v);
-  });
+  ['tracker','charts','history'].forEach(x=>document.getElementById('pill-'+x).classList.toggle('active',x===v));
   document.getElementById('dots').style.display=v==='tracker'?'flex':'none';
   document.getElementById('swipe-hint').style.display=v==='tracker'?'block':'none';
   renderTrack();
 }
-window.switchView = switchView;
+window.switchView=switchView;
 
-// ---- RENDER ----
 function render(){ renderTabs(); renderDots(); renderTrack(); updateSwipeHint(); }
 
 function renderTabs(){
@@ -433,7 +423,6 @@ function renderTrack(){
   const track=document.getElementById('track');
   Object.values(chartInstances).forEach(c=>c.destroy());
   chartInstances={};
-
   if(activeView==='tracker'){
     track.innerHTML='';
     state.pages.forEach((p,i)=>{
@@ -459,7 +448,16 @@ function trackerHTML(p,idx){
   const rem=p.budget-spent;
   const pct=p.budget>0?Math.min((spent/p.budget)*100,100):0;
   const barCls=pct>=100?'over':pct>=80?'warn':'';
-  const catOptions=p.cats.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  const selCat=selectedCats[idx]||p.cats[0]?.id||'';
+
+  const chipsHTML=p.cats.map(c=>{
+    const sel=selCat===c.id;
+    const bg=sel?c.color+'22':'#f5f5f5';
+    const tc=c.color;
+    const border=sel?`border-color:${c.color};box-shadow:0 0 0 1px ${c.color}`:'border-color:transparent';
+    return `<div class="cat-chip${sel?' selected':''}" style="background:${bg};color:${tc};${border}" onclick="selectCat(${idx},'${c.id}')">${c.name}</div>`;
+  }).join('');
+
   return `<div class="pad">
     <div class="summary-grid">
       <div class="metric"><div class="metric-label">Budget</div><div class="metric-value">${fmt(p.budget)}</div></div>
@@ -475,12 +473,12 @@ function trackerHTML(p,idx){
     </div>
     <div class="card">
       <div class="card-title">Add expense <button class="card-title-btn" onclick="openCatModal(${idx})">Edit categories</button></div>
-      <div class="add-row">
+      <div class="add-inputs">
         <input type="text" placeholder="Description" id="desc-${idx}" autocomplete="off" />
         <input type="number" placeholder="$0.00" id="amt-${idx}" min="0" step="0.01" inputmode="decimal" onkeydown="if(event.key==='Enter') addEntry(${idx})" />
         <button class="add-btn" onclick="addEntry(${idx})">+</button>
       </div>
-      <select id="cat-${idx}">${catOptions}</select>
+      <div class="cat-chips" id="chips-${idx}">${chipsHTML}</div>
     </div>
     <div class="card">
       <div class="card-title">Expenses</div>
@@ -494,6 +492,19 @@ function trackerHTML(p,idx){
     </div>
   </div>`;
 }
+
+window.selectCat = function(idx, catId){
+  selectedCats[idx]=catId;
+  // Just re-render chips, don't rebuild whole page
+  const p=state.pages[idx];
+  const selCat=catId;
+  document.getElementById(`chips-${idx}`).innerHTML=p.cats.map(c=>{
+    const sel=selCat===c.id;
+    const bg=sel?c.color+'22':'#f5f5f5';
+    const border=sel?`border-color:${c.color};box-shadow:0 0 0 1px ${c.color}`:'border-color:transparent';
+    return `<div class="cat-chip${sel?' selected':''}" style="background:${bg};color:${c.color};${border}" onclick="selectCat(${idx},'${c.id}')">${c.name}</div>`;
+  }).join('');
+};
 
 // ---- CHARTS ----
 function chartsHTML(){
@@ -552,14 +563,13 @@ function historyHTML(){
   }).join('');
 }
 
-window.toggleMonth = function(i){
+window.toggleMonth=function(i){
   const body=document.getElementById(`mbody-${i}`);
   const chev=document.getElementById(`chev-${i}`);
   const isOpen=body.classList.toggle('open');
   chev.classList.toggle('open',isOpen);
   if(isOpen) setTimeout(()=>renderHistoryChart(i),50);
 };
-
 function renderHistoryChart(i){
   if(chartInstances[`hist-${i}`]) return;
   const el=document.getElementById(`hist-chart-${i}`);
@@ -569,9 +579,8 @@ function renderHistoryChart(i){
 }
 
 // ---- CATEGORY MODAL ----
-window.openCatModal = function(idx){
-  editingCatPageIdx=idx;
-  pickerTargetId=null;
+window.openCatModal=function(idx){
+  editingCatPageIdx=idx; pickerTargetId=null;
   document.getElementById('modal-cats-subtitle').textContent=`Editing "${state.pages[idx].name}"`;
   renderCatList();
   document.getElementById('color-picker').style.display='none';
@@ -580,54 +589,91 @@ window.openCatModal = function(idx){
 
 function renderCatList(){
   const p=state.pages[editingCatPageIdx];
-  document.getElementById('cat-list').innerHTML=p.cats.map((c)=>`
-    <div class="cat-row">
+  const el=document.getElementById('cat-list');
+  el.innerHTML=p.cats.map((c,ci)=>`
+    <div class="cat-row" draggable="true" data-idx="${ci}">
+      <span class="drag-handle">≡</span>
       <button class="cat-color-btn" style="background:${c.color}" onclick="openColorPicker('${c.id}')">${pickerTargetId===c.id?'✓':''}</button>
       <input class="cat-name-input" type="text" value="${c.name}" maxlength="20" onchange="renameCat('${c.id}',this.value)" />
       <button class="cat-del-btn" onclick="deleteCat('${c.id}')">×</button>
     </div>`).join('');
+  setupDragAndDrop();
 }
 
-window.openColorPicker = function(catId){
+// Drag to reorder
+let dragSrcIdx = null;
+function setupDragAndDrop(){
+  const rows = document.querySelectorAll('.cat-row');
+  rows.forEach(row=>{
+    row.addEventListener('dragstart',e=>{
+      dragSrcIdx=parseInt(row.dataset.idx);
+      row.classList.add('dragging');
+      e.dataTransfer.effectAllowed='move';
+    });
+    row.addEventListener('dragend',()=>{ row.classList.remove('dragging'); document.querySelectorAll('.cat-row').forEach(r=>r.classList.remove('drag-over')); });
+    row.addEventListener('dragover',e=>{ e.preventDefault(); row.classList.add('drag-over'); });
+    row.addEventListener('dragleave',()=>row.classList.remove('drag-over'));
+    row.addEventListener('drop',e=>{
+      e.preventDefault();
+      const targetIdx=parseInt(row.dataset.idx);
+      if(dragSrcIdx===null||dragSrcIdx===targetIdx) return;
+      const p=state.pages[editingCatPageIdx];
+      const moved=p.cats.splice(dragSrcIdx,1)[0];
+      p.cats.splice(targetIdx,0,moved);
+      // update selected cat if it was first
+      if(!selectedCats[editingCatPageIdx]) selectedCats[editingCatPageIdx]=p.cats[0]?.id;
+      save(); renderCatList();
+    });
+    // Touch drag for mobile
+    let touchY=0, touchItem=null;
+    row.addEventListener('touchstart',e=>{ touchY=e.touches[0].clientY; touchItem=parseInt(row.dataset.idx); },{passive:true});
+    row.addEventListener('touchend',e=>{
+      const endY=e.changedTouches[0].clientY;
+      const diff=endY-touchY;
+      if(Math.abs(diff)<30) return;
+      const p=state.pages[editingCatPageIdx];
+      const dir=diff>0?1:-1;
+      const newIdx=Math.max(0,Math.min(p.cats.length-1,touchItem+dir));
+      if(newIdx===touchItem) return;
+      const moved=p.cats.splice(touchItem,1)[0];
+      p.cats.splice(newIdx,0,moved);
+      save(); renderCatList();
+    },{passive:true});
+  });
+}
+
+window.openColorPicker=function(catId){
   pickerTargetId=catId;
   document.getElementById('color-picker').style.display='block';
   const cat=catById(state.pages[editingCatPageIdx].cats,catId);
   document.getElementById('color-swatches').innerHTML=PALETTE.map(col=>`<div class="color-swatch ${cat.color===col?'selected':''}" style="background:${col}" onclick="pickColor('${catId}','${col}')"></div>`).join('');
   renderCatList();
 };
-
-window.pickColor = function(catId,color){
+window.pickColor=function(catId,color){
   const cat=state.pages[editingCatPageIdx].cats.find(c=>c.id===catId);
   if(cat) cat.color=color;
-  save();
-  document.getElementById('color-picker').style.display='none';
-  pickerTargetId=null;
-  renderCatList();
+  save(); document.getElementById('color-picker').style.display='none'; pickerTargetId=null; renderCatList();
 };
-
-window.renameCat = function(catId,name){
+window.renameCat=function(catId,name){
   const cat=state.pages[editingCatPageIdx].cats.find(c=>c.id===catId);
-  if(cat&&name.trim()) cat.name=name.trim();
-  save();
+  if(cat&&name.trim()) cat.name=name.trim(); save();
 };
-
-window.deleteCat = function(catId){
+window.deleteCat=function(catId){
   const p=state.pages[editingCatPageIdx];
   if(p.cats.length<=1){ alert('You need at least one category.'); return; }
   if(p.entries.some(e=>e.cat===catId)&&!confirm("Some expenses use this category. They'll show as Other. Continue?")) return;
-  p.entries.forEach(e=>{ if(e.cat===catId) e.cat='other'; });
+  p.entries.forEach(e=>{ if(e.cat===catId) e.cat=p.cats.find(c=>c.id!==catId)?.id||'other'; });
   p.cats=p.cats.filter(c=>c.id!==catId);
+  if(selectedCats[editingCatPageIdx]===catId) selectedCats[editingCatPageIdx]=p.cats[0]?.id||'';
   save(); renderCatList();
 };
-
-window.addCategory = function(){
+window.addCategory=function(){
   const inp=document.getElementById('new-cat-name');
   const name=inp.value.trim();
   if(!name) return;
   const p=state.pages[editingCatPageIdx];
   p.cats.push({id:uid(),name,color:PALETTE[p.cats.length%PALETTE.length]});
-  inp.value='';
-  save(); renderCatList();
+  inp.value=''; save(); renderCatList();
 };
 document.getElementById('new-cat-name').addEventListener('keydown',e=>{ if(e.key==='Enter') window.addCategory(); });
 
@@ -637,7 +683,7 @@ function goTo(i){
   document.getElementById('track').style.transform=`translateX(-${currentPage*100}vw)`;
   renderTabs(); renderDots(); updateSwipeHint();
 }
-window.goTo = goTo;
+window.goTo=goTo;
 
 function updateSwipeHint(){
   const el=document.getElementById('swipe-hint');
@@ -647,60 +693,55 @@ function updateSwipeHint(){
   else el.textContent=state.pages[currentPage-1].name+' ← swipe → '+state.pages[currentPage+1].name;
 }
 
-window.setBudget = function(idx,val){
-  state.pages[idx].budget=parseFloat(val)||0;
-  save();
+window.setBudget=function(idx,val){
+  state.pages[idx].budget=parseFloat(val)||0; save();
   const pg=document.getElementById('track').children[idx];
   if(pg) pg.innerHTML=trackerHTML(state.pages[idx],idx);
 };
-
-window.addEntry = function(idx){
+window.addEntry=function(idx){
   const desc=document.getElementById(`desc-${idx}`).value.trim();
   const amount=parseFloat(document.getElementById(`amt-${idx}`).value);
-  const cat=document.getElementById(`cat-${idx}`).value;
+  const cat=selectedCats[idx]||state.pages[idx].cats[0]?.id||'other';
   if(!desc||isNaN(amount)||amount<=0) return;
   state.pages[idx].entries.push({desc,amount,cat,date:new Date().toISOString()});
   save();
   const pg=document.getElementById('track').children[idx];
   if(pg) pg.innerHTML=trackerHTML(state.pages[idx],idx);
 };
-
-window.deleteEntry = function(idx,ei){
-  state.pages[idx].entries.splice(ei,1);
-  save();
+window.deleteEntry=function(idx,ei){
+  state.pages[idx].entries.splice(ei,1); save();
   const pg=document.getElementById('track').children[idx];
   if(pg) pg.innerHTML=trackerHTML(state.pages[idx],idx);
 };
-
-window.deletePage = function(e,idx){
+window.deletePage=function(e,idx){
   e.stopPropagation();
   if(!confirm(`Delete "${state.pages[idx].name}"?`)) return;
   state.pages.splice(idx,1);
   if(currentPage>=state.pages.length) currentPage=state.pages.length-1;
   save(); render();
 };
-
-window.openResetModal = function(){ document.getElementById('modal-reset').classList.add('open'); };
-window.confirmReset = function(){
+window.openResetModal=function(){ document.getElementById('modal-reset').classList.add('open'); };
+window.confirmReset=function(){
   state.history.push({key:Date.now().toString(),label:monthLabel(new Date()),pages:cloneDeep(state.pages)});
   state.pages.forEach(p=>{ p.entries=[]; });
   save(); closeModal('modal-reset'); switchView('tracker'); render();
 };
-
-window.openAddPage = function(){
+window.openAddPage=function(){
   document.getElementById('modal-page').classList.add('open');
   setTimeout(()=>document.getElementById('modal-page-input').focus(),100);
 };
-window.confirmAddPage = function(){
+window.confirmAddPage=function(){
   const name=document.getElementById('modal-page-input').value.trim()||'New page';
+  const idx=state.pages.length;
   state.pages.push({id:uid(),name,budget:0,entries:[],cats:cloneDeep(DEFAULT_CATS)});
+  selectedCats[idx]=DEFAULT_CATS[0].id;
   currentPage=state.pages.length-1;
   save(); render(); closeModal('modal-page');
   if(activeView!=='tracker') switchView('tracker');
 };
 document.getElementById('modal-page-input').addEventListener('keydown',e=>{ if(e.key==='Enter') window.confirmAddPage(); });
 
-window.closeModal = function(id){
+window.closeModal=function(id){
   document.getElementById(id).classList.remove('open');
   const inp=document.querySelector(`#${id} input`);
   if(inp) inp.value='';
