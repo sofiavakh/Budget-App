@@ -1,9 +1,14 @@
-const CACHE = 'finance-tracker-v5';
-const STATIC = ['/icon-192.png', '/icon-512.png', '/manifest.json'];
+const CACHE = 'finance-tracker-v6';
+const ASSETS = [
+  '/Budget-App/',
+  '/Budget-App/index.html',
+  '/Budget-App/manifest.json',
+  '/Budget-App/icon-192.png',
+  '/Budget-App/icon-512.png'
+];
 
-// Only cache static assets — never cache index.html so updates always load fresh
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(STATIC)));
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
   self.skipWaiting();
 });
 
@@ -16,10 +21,10 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
-  // Always fetch HTML fresh from network — fall back to cache only if offline
-  if (url.pathname.endsWith('.html') || url.pathname === '/' || url.pathname.endsWith('/')) {
+  // Always fetch HTML fresh — fall back to cache only if offline
+  if (url.pathname.endsWith('.html') || url.pathname.endsWith('/')) {
     e.respondWith(
-      fetch(e.request).catch(() => caches.match('/index.html'))
+      fetch(e.request).catch(() => caches.match('/Budget-App/index.html'))
     );
     return;
   }
