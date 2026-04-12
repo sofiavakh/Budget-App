@@ -479,7 +479,11 @@ function trackerHTML(p,idx){
       <div class="progress-bar-bg"><div class="progress-bar ${barCls}" style="width:${pct}%"></div></div>
     </div>
     <div class="card">
-      <div class="card-title">Add expense <button class="card-title-btn" onclick="openCatModal(${idx})">Edit categories</button></div>
+      <div class="card-title">Add entry <button class="card-title-btn" onclick="openCatModal(${idx})">Edit categories</button></div>
+      <div class="type-toggle">
+        <button class="type-btn active-expense" id="type-exp-${idx}" onclick="setType(${idx},'expense')">− Expense</button>
+        <button class="type-btn" id="type-inc-${idx}" onclick="setType(${idx},'income')">+ Income</button>
+      </div>
       <div class="add-inputs">
         <input type="text" placeholder="Description" id="desc-${idx}" autocomplete="off" />
         <input type="number" placeholder="$0.00" id="amt-${idx}" min="0" step="0.01" inputmode="decimal" onkeydown="if(event.key==='Enter') addEntry(${idx})" />
@@ -488,13 +492,16 @@ function trackerHTML(p,idx){
       <div class="cat-chips" id="chips-${idx}">${chipsHTML}</div>
     </div>
     <div class="card">
-      <div class="card-title">Expenses</div>
-      ${p.entries.length===0?'<div class="empty">No expenses yet</div>'
+      <div class="card-title">Entries</div>
+      ${p.entries.length===0?'<div class="empty">No entries yet</div>'
         :`<table class="entries-table"><thead><tr><th>Description</th><th>Cat</th><th class="r">Amount</th><th></th></tr></thead>
           <tbody>${p.entries.map((e,ei)=>{
             const cat=catById(p.cats,e.cat);
-            return `<tr><td>${e.desc}</td><td>${badgeHTML(cat)}</td><td class="r">${fmt(e.amount)}</td>
-              <td><button class="del-btn" onclick="deleteEntry(${idx},${ei})">×</button></td></tr>`;
+            const isIncome=e.income===true;
+            const amtStyle=isIncome?'color:#16a34a':'';
+            const amtStr=isIncome?'+'+fmt(e.amount):fmt(e.amount);
+            return \`<tr><td>\${e.desc}</td><td>\${badgeHTML(cat)}</td><td class="r" style="\${amtStyle}">\${amtStr}</td>
+              <td><button class="del-btn" onclick="deleteEntry(\${idx},\${ei})">×</button></td></tr>\`;
           }).join('')}</tbody></table>`}
     </div>
   </div>`;
