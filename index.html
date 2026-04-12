@@ -34,6 +34,7 @@
     header{background:#4F46E5;color:white;padding:1rem 1rem 0;padding-top:calc(1rem + env(safe-area-inset-top));flex-shrink:0;z-index:10}
     .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
     .header-top h1{font-size:18px;font-weight:600}
+    .header-date{font-size:12px;opacity:.75;margin-top:1px}
     .header-actions{display:flex;gap:6px;align-items:center}
     .hbtn{background:rgba(255,255,255,0.2);border:none;color:white;border-radius:8px;padding:5px 11px;font-size:13px;cursor:pointer}
     .hbtn:active{background:rgba(255,255,255,0.35)}
@@ -91,6 +92,10 @@
     .add-inputs{display:grid;grid-template-columns:1fr 105px 42px;gap:7px;margin-bottom:10px}
     .add-btn{background:#4F46E5;color:white;border:none;border-radius:8px;width:42px;height:40px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center}
     .add-btn:active{background:#4338CA;transform:scale(.95)}
+    .type-toggle{display:flex;gap:6px;margin-bottom:10px}
+    .type-btn{flex:1;height:34px;border-radius:8px;border:1.5px solid #e5e7eb;background:#fafafa;font-size:13px;font-weight:500;cursor:pointer;color:#888;transition:all .15s}
+    .type-btn.active-expense{background:#fee2e2;border-color:#fca5a5;color:#dc2626}
+    .type-btn.active-income{background:#dcfce7;border-color:#86efac;color:#16a34a}
 
     /* CATEGORY CHIPS */
     .cat-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:2px}
@@ -193,6 +198,7 @@
   <header>
     <div class="header-top">
       <h1>💰 Finance Tracker</h1>
+        <div class="header-date" id="header-date"></div>
       <div class="header-actions">
         <button class="hbtn" onclick="openAddPage()">+ Page</button>
         <button class="hbtn" onclick="openResetModal()">↺ Reset</button>
@@ -307,6 +313,7 @@ let unsubscribe = null;
 let currentUser = null;
 // Per-page selected category (not persisted, just UI state)
 let selectedCats = {};
+let entryTypes = {}; // per page: "expense" or "income"
 
 function uid(){ return Math.random().toString(36).slice(2,9); }
 function fmt(n){ return '$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
@@ -376,7 +383,7 @@ onAuthStateChanged(auth, async(user)=>{
       setDoc(doc(db,'users',user.uid),state);
     }
     // Init selected cats for new pages
-    state.pages.forEach((p,i)=>{ if(!(i in selectedCats)) selectedCats[i]=p.cats[0]?.id||''; });
+    state.pages.forEach((p,i)=>{ if(!(i in selectedCats)) selectedCats[i]=p.cats[0]?.id||''; if(!(i in entryTypes)) entryTypes[i]='expense'; });
     document.getElementById('app').classList.add('visible');
     render();
   });
@@ -444,7 +451,7 @@ function renderTrack(){
 
 // ---- TRACKER ----
 function trackerHTML(p,idx){
-  const spent=p.entries.reduce((s,e)=>s+e.amount,0);
+  const spent=p.entries.reduce((s,e)=>s+(e.income?-e.amount:e.amount),0);
   const rem=p.budget-spent;
   const pct=p.budget>0?Math.min((spent/p.budget)*100,100):0;
   const barCls=pct>=100?'over':pct>=80?'warn':'';
@@ -493,6 +500,16 @@ function trackerHTML(p,idx){
   </div>`;
 }
 
+window.setType = function(idx, type){
+  entryTypes[idx]=type;
+  const expBtn=document.getElementById(`type-exp-${idx}`);
+  const incBtn=document.getElementById(`type-inc-${idx}`);
+  if(expBtn&&incBtn){
+    expBtn.className='type-btn'+(type==='expense'?' active-expense':'');
+    incBtn.className='type-btn'+(type==='income'?' active-income':'');
+  }
+};
+
 window.selectCat = function(idx, catId){
   selectedCats[idx]=catId;
   // Just re-render chips, don't rebuild whole page
@@ -526,7 +543,7 @@ function renderCharts(){
     const el=document.getElementById(`chart-donut-${i}`);
     const barsEl=document.getElementById(`bars-${i}`);
     if(!el) return;
-    const spent=p.entries.reduce((s,e)=>s+e.amount,0);
+    const spent=p.entries.reduce((s,e)=>s+(e.income?-e.amount:e.amount),0);
     const catTotals=p.cats.map(c=>({cat:c,total:p.entries.filter(e=>e.cat===c.id).reduce((s,e)=>s+e.amount,0)})).filter(x=>x.total>0);
     if(catTotals.length===0){ if(barsEl) barsEl.innerHTML='<div class="empty" style="padding:.5rem 0">No expenses yet</div>'; return; }
     chartInstances[`donut-${i}`]=new Chart(el,{type:'doughnut',data:{labels:catTotals.map(x=>x.cat.name),datasets:[{data:catTotals.map(x=>x.total),backgroundColor:catTotals.map(x=>x.cat.color),borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{position:'right',labels:{font:{size:12},boxWidth:12,padding:10}},tooltip:{callbacks:{label:ctx=>' '+fmt(ctx.raw)}}},cutout:'60%'}});
@@ -702,8 +719,9 @@ window.addEntry=function(idx){
   const desc=document.getElementById(`desc-${idx}`).value.trim();
   const amount=parseFloat(document.getElementById(`amt-${idx}`).value);
   const cat=selectedCats[idx]||state.pages[idx].cats[0]?.id||'other';
+  const isIncome=(entryTypes[idx]||'expense')==='income';
   if(!desc||isNaN(amount)||amount<=0) return;
-  state.pages[idx].entries.push({desc,amount,cat,date:new Date().toISOString()});
+  state.pages[idx].entries.push({desc,amount,cat,income:isIncome,date:new Date().toISOString()});
   save();
   const pg=document.getElementById('track').children[idx];
   if(pg) pg.innerHTML=trackerHTML(state.pages[idx],idx);
@@ -761,6 +779,16 @@ document.getElementById('viewport').addEventListener('touchmove',e=>{ if(activeV
 document.getElementById('viewport').addEventListener('touchend',()=>{ if(activeView!=='tracker') return; track.style.transition='transform .3s cubic-bezier(.4,0,.2,1)'; if(Math.abs(dragDelta)>60){ if(dragDelta<0&&currentPage<state.pages.length-1) goTo(currentPage+1); else if(dragDelta>0&&currentPage>0) goTo(currentPage-1); else goTo(currentPage); } else goTo(currentPage); dragging=false; dragDelta=0; },{passive:true});
 
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+
+// Date display
+function updateDate(){
+  const now = new Date();
+  const day = now.toLocaleString('default',{weekday:'short'});
+  const month = now.toLocaleString('default',{month:'short'});
+  const date = now.getDate();
+  document.getElementById('header-date').textContent = `${day}·${month} ${date}`;
+}
+updateDate();
 </script>
 </body>
 </html>
