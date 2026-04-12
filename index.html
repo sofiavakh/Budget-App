@@ -500,8 +500,8 @@ function trackerHTML(p,idx){
             const isIncome=e.income===true;
             const amtStyle=isIncome?'color:#16a34a':'';
             const amtStr=isIncome?'+'+fmt(e.amount):fmt(e.amount);
-            return \`<tr><td>\${e.desc}</td><td>\${badgeHTML(cat)}</td><td class="r" style="\${amtStyle}">\${amtStr}</td>
-              <td><button class="del-btn" onclick="deleteEntry(\${idx},\${ei})">×</button></td></tr>\`;
+            return `<tr><td>${e.desc}</td><td>${badgeHTML(cat)}</td><td class="r" style="${amtStyle}">${amtStr}</td>
+              <td><button class="del-btn" onclick="deleteEntry(${idx},${ei})">×</button></td></tr>`;
           }).join('')}</tbody></table>`}
     </div>
   </div>`;
