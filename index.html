@@ -617,8 +617,8 @@ function breakdownHTML(){
   return '<div class="pad">'
     +'<div class="summary-grid">'
     +'<div class="metric"><div class="metric-label">Income</div><div class="metric-value success">'+fmt(bd.income)+'</div></div>'
-    +'<div class="metric"><div class="metric-label">Subscriptions</div><div class="metric-value danger">'+fmt(subTotal)+'</div></div>'
-    +'<div class="metric"><div class="metric-label">All spent</div><div class="metric-value">'+fmt(totalSpent)+'</div></div>'
+    +'<div class="metric"><div class="metric-label">Spent</div><div class="metric-value danger">'+fmt(totalSpent)+'</div></div>'
+    +'<div class="metric"><div class="metric-label">Remaining</div><div class="metric-value '+(bd.income>0&&(bd.income-totalSpent)<0?'danger':'success')+'">'+fmt(Math.abs(bd.income-totalSpent))+'</div></div>'
     +'</div>'
     +'<div class="breakdown-section"><div class="breakdown-title">Monthly income</div>'
     +'<div class="budget-row"><label>Take-home pay</label>'
@@ -632,7 +632,7 @@ function breakdownHTML(){
     +(allocRows||'<div class="empty" style="padding:.5rem 0">No allocations added</div>')
     +(bd.allocations.length>0?'<div class="brow-sum"><span class="brow-sum-label">Total allocated</span><span class="brow-sum-val">'+fmt(allocTotal)+'</span></div>':'')
     +'<div class="add-brow-row"><input type="text" class="input-sm" id="alloc-name" placeholder="e.g. Groceries"/><input type="number" class="input-sm" id="alloc-amt" placeholder="$" min="0" step="0.01" inputmode="decimal"/><button class="add-brow-btn" onclick="addBreakdownItem(\'allocations\',\'alloc-name\',\'alloc-amt\')">+</button></div>'
-    +(bd.income>0?'<div class="alloc-bar-wrap"><div class="alloc-bar-bg"><div class="alloc-bar-fill" style="width:'+allocPct+'%"></div></div><div class="alloc-note">'+fmt(allocTotal)+' of '+fmt(bd.income)+' allocated</div></div>':'')
+    +(bd.income>0?'<div class="alloc-bar-wrap"><div class="alloc-bar-bg"><div class="alloc-bar-fill" style="width:'+allocPct+'%"></div></div><div class="alloc-note">'+fmt(allocTotal)+' allocated · <span style="color:'+(bd.income-allocTotal<0?'#dc2626':'#16a34a')+'">'+fmt(Math.abs(bd.income-allocTotal))+(bd.income-allocTotal<0?' over':' remaining')+'</span></div></div>':'')
     +'</div>'
     +'<div class="breakdown-section"><div class="breakdown-title">DCU card debt</div>'
     +'<div class="debt-config">'
